@@ -8,12 +8,24 @@ import warnings
 import os
 import soundfile as sf
 import sounddevice as sd
-
+import requests
 # Suppress warnings
 warnings.filterwarnings("ignore")
 
+
+# Direct download URL from Google Drive
+url = 'https://drive.google.com/uc?export=download&id=16ZjF4-p43wheaKilzIlYMUDO-EttVm5U'
+
+# Send HTTP request to the URL
+response = requests.get(url)
+
+# Save the content to a file (model)
+model_path = 'models/yolov8m.pt'  # New directory where the model will be saved
+with open(model_path, 'wb') as f:
+    f.write(response.content)
+
 # Load YOLO model
-yolo_model = YOLO('/Users/sam/Desktop/Master 02/Semester 01/AV/Project/Object Detection/yolov8m.pt')
+yolo_model = YOLO(model_path)
 # Set page config
 st.set_page_config(page_title="Traffic Detection", page_icon="🚦", layout="wide")
 # App Title and Description
@@ -115,7 +127,7 @@ if uploaded_files:
             
             if alert_sound:
                 # Play sound alert (you can replace this with any sound file you prefer)
-                alert_file = "/Users/sam/Desktop/Master 02/Semester 01/AV/Project/Object Detection/alert.mp3"  # Replace with actual file path
+                alert_file = "/alert.mp3"  # Replace with actual file path
                 if os.path.exists(alert_file):
                     data, fs = sf.read(alert_file)
                     sd.play(data, fs)
