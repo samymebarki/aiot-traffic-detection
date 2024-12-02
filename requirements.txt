@@ -1,0 +1,8 @@
+streamlit
+requests
+ultralytics
+numpy
+pandas
+Pillow
+soundfile
+sounddevice
